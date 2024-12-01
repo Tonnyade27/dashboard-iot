@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - IoT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <header>
+        <nav class="bg-blue-500 p-4 text-white" aria-label="Main Navigation">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold">IoT Dashboard</h1>
+                <div class="flex items-center space-x-4">
+                    <a href="profile.html">
+                        <img src="./profil.jpg" alt="Profile Picture"
+                            class="w-10 h-10 rounded-full border-2 border-white cursor-pointer">
+                    </a>
+                    <a href="index.html" class="text-sm hover:underline" id="logout">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <!-- Sensor Data Section -->
+        <section aria-labelledby="sensor-data" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <h2 id="sensor-data" class="sr-only">Sensor Data</h2>
+        
+            <!-- Dynamic Sensor Cards -->
+            <article class="bg-white p-4 rounded shadow-md w-full">
+                <h3 class="text-lg font-bold mb-2"> 
+                    <i class="fas fa-temperature-high mr-2 text-blue-500"></i>Temperatur
+                </h3>
+                <p>Value: <span id="temperature-value">Loading...</span> °C</p>
+            </article>
+            <article class="bg-white p-4 rounded shadow-md w-full">
+                <h3 class="text-lg font-bold mb-2"> 
+                    <i class="fas fa-tint mr-2 text-blue-500"></i>Humidity
+                </h3>
+                <p>Value: <span id="humidity-value">Loading...</span> %</p>
+            </article>
+            <article class="bg-white p-4 rounded shadow-md w-full">
+                <h3 class="text-lg font-bold mb-2">
+                    <i class="fas fa-gas-pump mr-2 text-blue-500"></i>Sensor Gas
+                </h3>
+                <p>Value: <span id="gas-value">Loading...</span> ppm</p>
+            </article>
+            <article class="bg-white p-4 rounded shadow-md w-full">
+                <h3 class="text-lg font-bold mb-2">
+                    <i class="fas fa-plug mr-2 text-blue-500"></i>Voltage
+                </h3>
+                <p>Value: <span id="voltage-value">Loading...</span> V</p>
+            </article>
+            <article class="bg-white p-4 rounded shadow-md w-full">
+                <h3 class="text-lg font-bold mb-2">
+                    <i class="fas fa-bolt mr-2 text-blue-500"></i>Arus
+                </h3>
+                <p>Value: <span id="current-value">Loading...</span> A</p>
+            </article>
+            <article class="bg-white p-4 rounded shadow-md w-full">
+                <h3 class="text-lg font-bold mb-2">
+                    <i class="fas fa-signal mr-2 text-blue-500"></i>Frekuensi
+                </h3>
+                <p>Value: <span id="freq-value">Loading...</span> Hz</p>
+            </article>
+        </section>
+
+        <section aria-labelledby="controls" class="mt-10">
+            <h2 id="controls" class="text-xl font-bold text-gray-800 mb-6">Kontrol Perangkat</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Button: Kipas -->
+                <button id="kipas-button" class="bg-blue-500 text-white p-4 rounded shadow-md flex flex-col items-center hover:bg-blue-600">
+                    <i class="fas fa-fan text-2xl mb-2"></i>
+                    <span>Kipas</span>
+                </button>
+                <!-- Button: AC -->
+                <button id="ac-button" class="bg-blue-500 text-white p-4 rounded shadow-md flex flex-col items-center hover:bg-blue-600">
+                    <i class="fas fa-snowflake text-2xl mb-2"></i>
+                    <span>AC</span>
+                </button>
+                <!-- Button: TV -->
+                <button id="tv-button" class="bg-blue-500 text-white p-4 rounded shadow-md flex flex-col items-center hover:bg-blue-600">
+                    <i class="fas fa-tv text-2xl mb-2"></i>
+                    <span>TV</span>
+                </button>
+                <!-- Button: Lampu -->
+                <button id="lampu-button" class="bg-blue-500 text-white p-4 rounded shadow-md flex flex-col items-center hover:bg-blue-600">
+                    <i class="fas fa-lightbulb text-2xl mb-2"></i>
+                    <span>Lampu</span>
+                </button>
+            </div>
+        </section>
+    
+        <!-- Chart Section -->
+        <section aria-labelledby="charts" class="mt-10">
+            <h2 id="charts" class="text-xl font-bold text-gray-800 mb-6">Daya dan Energi</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Chart 1: Daya -->
+                <div class="bg-white p-4 rounded shadow-md">
+                    <h3 class="text-lg font-bold mb-4">Grafik Daya (Watt)</h3>
+                    <canvas id="powerChart"></canvas>
+                </div>
+                <!-- Chart 2: Energi -->
+                <div class="bg-white p-4 rounded shadow-md">
+                    <h3 class="text-lg font-bold mb-4">Grafik Energi (kWh)</h3>
+                    <canvas id="energyChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2024 IoT Dashboard. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const logoutMobile = document.getElementById('logout-mobile');
+
+        hamburger.addEventListener('click', () => {
+            // Toggle menu mobile
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        logoutMobile.addEventListener('click', () => {
+            // Optional: handle logout here, e.g., redirect or logout logic
+            alert('Logging out...');
+        });
+    </script>
+</body>
+
+</html>

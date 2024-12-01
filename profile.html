@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - IoT Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+    <header>
+        <nav class="bg-blue-500 p-4 text-white" aria-label="Main Navigation">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold">IoT Dashboard</h1>
+                <div class="flex items-center space-x-4">
+                    <!-- Foto Profil Bulat yang bisa di-klik -->
+                    <a href="profile.html">
+                        <img src="https://via.placeholder.com/40" alt="Profile Picture"
+                            class="w-10 h-10 rounded-full border-2 border-white cursor-pointer">
+                    </a>
+                    <a href="index.html" class="text-sm hover:underline" id="logout">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Halaman Profil -->
+    <main class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <div class="flex items-center space-x-4">
+            <!-- Foto Profil Bulat -->
+            <img src="https://via.placeholder.com/100" alt="Profile Picture"
+                class="w-24 h-24 rounded-full border-2 border-blue-500">
+            <div>
+                <h2 class="text-2xl font-bold">John Doe</h2>
+                <p class="text-sm text-gray-600">Email: john.doe@example.com</p>
+                <p class="text-sm text-gray-600">Username: johndoe123</p>
+            </div>
+        </div>
+
+        <!-- Informasi Tambahan Profil -->
+        <section class="mt-8">
+            <h3 class="text-xl font-semibold mb-2">About</h3>
+            <p class="text-gray-700">
+                Hello, I'm John Doe, a passionate IoT enthusiast. I love working with sensors and creating smart devices
+                to make life easier and more connected. I'm always learning and exploring new technologies.
+            </p>
+        </section>
+    </main>
+
+</body>
+
+</html>
