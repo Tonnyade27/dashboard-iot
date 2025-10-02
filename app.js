@@ -1,6 +1,6 @@
-const API_URL = "https://server-iotcuy.vercel.app"; // Ganti dengan URL API Anda
+const API_URL = "http://localhost:3000/api";
 
-
+// ------------------ LOGIN ------------------
 async function login(event) {
     event.preventDefault(); 
 
@@ -30,6 +30,7 @@ async function login(event) {
     }
 }
 
+// ------------------ FETCH SENSOR DATA ------------------
 async function fetchSensorData() {
     const authToken = localStorage.getItem("authToken");
 
@@ -39,8 +40,11 @@ async function fetchSensorData() {
         return;
     }
 
+    console.log("authToken:", localStorage.getItem("authToken"));
+
+
     try {
-        const response = await fetch(`${API_URL}/data`, {
+        const response = await fetch(`${API_URL}/sensors`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${authToken}`
@@ -51,24 +55,64 @@ async function fetchSensorData() {
             throw new Error("Failed to fetch sensor data. Please try again.");
         }
 
-        const sensorResponse = await response.json();
-        const sensorData = sensorResponse.data[0].sensors;
+        console.log("Raw response object:", response);
+        const sensorData = await response.json();
+        console.log("Parsed sensorData:", sensorData);
 
-        updateSensorUI(sensorData);
+
+        if (!sensorData || sensorData.length === 0) {
+            console.log("Data tidak ditemukan, set default 0");
+            updateSensorUI({
+                ec: 0,
+                ph: 0,
+                humidity: 0,
+                nitrogen: 0,
+                potassium: 0,
+                phosphorus: 0,
+                temperature: 0
+            });
+            return;
+        }
+
+        const latestRecord = sensorData[0]; // ambil data paling baru
+        console.log("Latest record:", latestRecord);
+
+        updateSensorUI(latestRecord.data);
+
+
+
+
     } catch (error) {
-        alert(error.message); 
+        console.error(error);
+        alert(error.message);
+        updateSensorUI({});
     }
 }
 
+// ------------------ UPDATE UI ------------------
 function updateSensorUI(data) {
-    data.forEach(sensor => {
-        const sensorElement = document.querySelector(`#${sensor.name}-value`);
+    // daftar id sensor sesuai backend
+    const sensorList = [
+        "nitrogen", 
+        "phosphorus", 
+        "potassium", 
+        "ph", 
+        "ec", 
+        "humidity", 
+        "temperature"
+    ];
+    console.log("Updating UI with:", data);
+
+    sensorList.forEach(name => {
+        const sensorElement = document.querySelector(`#${name}-value`);
         if (sensorElement) {
-            sensorElement.textContent = `${sensor.value}`;
+            // ambil nilai dari object sensors, fallback ke 0
+            sensorElement.textContent = data[name] ?? 0;
         }
     });
 }
 
+// ------------------ EVENT LISTENER ------------------
 const loginForm = document.querySelector("form");
 if (loginForm) {
     loginForm.addEventListener("submit", login);
